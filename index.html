@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>鶴木瑛介 — Game Programmer Portfolio</title>
+  <meta name="description" content="ゲームプログラマー 鶴木瑛介のポートフォリオ。GravityFlip、ゲームジャム作品、物理演算デモなどを掲載しています。" />
+  <meta property="og:title" content="鶴木瑛介 — Game Programmer Portfolio" />
+  <meta property="og:description" content="Unity / C++ でゲームを作るプログラマー。チーム制作・個人制作・ゲームジャム作品を掲載。" />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#0b0d12" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230b0d12'/><circle cx='16' cy='12' r='6' fill='%23c8ff3e'/><rect x='6' y='22' width='20' height='3' fill='%23ff5a36'/></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=JetBrains+Mono:wght@400;600&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip" href="#works">本文へスキップ</a>
+  <header class="nav" id="top">
+    <a class="nav__logo" href="#top" aria-label="トップへ"><span class="nav__mark" aria-hidden="true"></span>TSURUKI<span class="dim">.EISUKE</span></a>
+    <nav aria-label="メインメニュー"><ul class="nav__links"><li><a href="#works">Works</a></li><li><a href="#tech">Tech</a></li><li><a href="#skills">Skills</a></li><li><a href="#events">Events</a></li></ul></nav>
+  </header>
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <canvas class="hero__canvas" id="physics" aria-hidden="true"></canvas><div class="hero__grid" aria-hidden="true"></div>
+      <div class="hero__inner"><p class="eyebrow"><span class="blink">▶</span> PLAYER 1 — GAME PROGRAMMER</p>
+        <h1 id="hero-title" class="hero__title"><span class="hero__ja">鶴木 瑛介</span><span class="hero__en">Tsuruki Eisuke</span></h1>
+        <p class="hero__lead">「気持ちいい操作感」を、コードで作るゲームプログラマー。<br />Unity と C++ で、チーム制作からゲームジャムまで9本のゲームを開発してきました。</p>
+        <div class="hero__actions"><a class="btn btn--primary" href="#works">作品を見る</a><button class="btn btn--ghost" type="button" id="flip-btn" aria-pressed="false"><span aria-hidden="true">⇅</span> 重力を反転</button></div>
+        <dl class="stats"><div><dt>GAMES</dt><dd>09</dd></div><div><dt>最優秀賞</dt><dd>×2</dd></div><div><dt>出展イベント</dt><dd>06+</dd></div><div><dt>TGS</dt><dd>出展</dd></div></dl>
+      </div><p class="hero__hint" aria-hidden="true">背景をクリック／タップでボールを追加 — ビリヤードの衝突計算と GravityFlip の重力反転をイメージしたデモです</p>
+    </section>
+    <section class="section profile" aria-labelledby="profile-title"><div class="container profile__wrap">
+      <div class="profile__card"><div class="profile__avatar"><img src="img/profile.jpg" alt="鶴木瑛介のプロフィール写真" loading="lazy" decoding="async" /></div>
+        <dl class="profile__meta"><div><dt>NAME</dt><dd>鶴木 瑛介</dd></div><div><dt>BORN</dt><dd>2004.08.08</dd></div><div><dt>ROLE</dt><dd>Game Programmer</dd></div><div><dt>MAIN</dt><dd>Unity / C# ・ C++ / DxLib / Go</dd></div></dl>
+      </div><div><p class="label">01 — PROFILE</p><h2 id="profile-title" class="h2">遊んで気持ちいい、を<br />仕組みから作る。</h2>
+        <p class="body">プレイヤーの挙動やギミックなど、手触りに直結する部分の実装を得意としています。先行入力やコヨーテタイムのような細かな工夫で、プレイヤーが「思った通りに動く」と感じられる操作を目指しています。</p>
+        <p class="body">チーム制作では、プランナーがコードに触れずに調整できるよう CSV や JSON でパラメータを外部化するなど、チーム全体が作りやすくなる設計を意識しています。</p></div>
+    </div></section>
+    <section class="section" id="works" aria-labelledby="works-title"><div class="container"><div class="section__head"><div><p class="label">02 — WORKS</p><h2 id="works-title" class="h2">制作したゲーム</h2></div>
+      <div class="filters" role="group" aria-label="作品の絞り込み"><button class="chip is-active" data-filter="all" aria-pressed="true">すべて</button><button class="chip" data-filter="チーム制作" aria-pressed="false">チーム</button><button class="chip" data-filter="個人制作" aria-pressed="false">個人</button><button class="chip" data-filter="ゲームジャム" aria-pressed="false">ゲームジャム</button><button class="chip" data-filter="Unity" aria-pressed="false">Unity</button><button class="chip" data-filter="C++" aria-pressed="false">C++</button></div></div>
+      <div id="featured"></div><ul class="works" id="works-grid"></ul><noscript><p class="body">作品一覧の表示には JavaScript を有効にしてください。</p></noscript></div></section>
+    <section class="section section--alt" id="tech" aria-labelledby="tech-title"><div class="container"><div class="section__head"><div><p class="label">03 — TECH DEMOS</p><h2 id="tech-title" class="h2">技術検証</h2></div><p class="section__note">ゲームを支える物理やデータ処理を、単体のデモとして検証しています。</p></div><div class="tech" id="tech-grid"></div></div></section>
+    <section class="section" id="skills" aria-labelledby="skills-title"><div class="container"><p class="label">04 — SKILLS</p><h2 id="skills-title" class="h2">製作スキル</h2><ul class="skills" id="skills-list"></ul></div></section>
+    <section class="section section--alt" id="events" aria-labelledby="events-title"><div class="container"><p class="label">05 — EVENTS</p><h2 id="events-title" class="h2">参加したイベント</h2><ol class="events" id="events-list"></ol></div></section>
+    <section class="section thanks" aria-labelledby="thanks-title"><div class="container"><p class="label">THANK YOU FOR PLAYING</p><h2 id="thanks-title" class="h2">最後まで見ていただき<br />ありがとうございます</h2></div></section>
+  </main>
+  <footer class="footer"><div class="container footer__wrap"><span>© 鶴木瑛介 Tsuruki Eisuke</span><a href="#top">▲ PAGE TOP</a></div></footer>
+  <dialog class="modal" id="work-modal" aria-labelledby="modal-title"><div class="modal__inner" id="modal-body"></div></dialog>
+  <dialog class="modal modal--video" id="video-modal" aria-labelledby="video-title"><div class="modal__videohead"><h3 id="video-title"></h3><button class="modal__close" type="button" aria-label="閉じる" data-close-video>✕</button></div><div class="modal__video" id="video-frame"></div></dialog>
+  <script src="data.js"></script><script src="main.js"></script>
+</body>
+</html>
