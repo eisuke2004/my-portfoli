@@ -179,7 +179,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .featured {
   display: grid; grid-template-columns: 1.25fr 1fr; gap: 0;
   background: var(--panel); border: 1px solid var(--line); border-radius: calc(var(--radius) + 4px);
-  overflow: hidden; margin-bottom: 28px;
+  overflow: hidden; margin-bottom: 28px; cursor: pointer;
 }
 .featured .cover { aspect-ratio: auto; min-height: 340px; }
 .featured .cover__title { font-size: clamp(34px, 5vw, 60px); left: 28px; bottom: 24px; }
@@ -358,3 +358,55 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .image-lightbox img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .image-lightbox__close { position: absolute; top: 10px; right: 10px; width: 38px; height: 38px; border: 1px solid var(--line); border-radius: 50%; color: #fff; background: #222733; font-size: 18px; cursor: pointer; }
 .image-lightbox__close:hover { background: var(--coral); }
+
+/* Four-image character design gallery: square 2x2 thumbnails with click-to-zoom */
+.modal__demo--gallery4 .modal__demo-images {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 1px;
+}
+.modal__demo--gallery4 .modal__demo-images figure {
+  position: relative;
+  min-width: 0;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: #fff;
+}
+.modal__demo--gallery4 .modal__demo-images figure:first-child { grid-column: auto; }
+/* Keep the first three thumbnails in one row; let the final outfit sheet fill the full row below. */
+.modal__demo--gallery4 .modal__demo-images figure:last-child {
+  grid-column: 1 / -1;
+  aspect-ratio: auto;
+}
+.modal__demo--gallery4 .modal__demo-images figure:last-child img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: auto;
+  object-fit: contain;
+}
+.modal__demo--gallery4 .modal__demo-images img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #fff;
+  cursor: zoom-in;
+}
+.modal__demo--gallery4 .modal__demo-images img:focus-visible { outline: 3px solid var(--lime); outline-offset: -3px; }
+.modal__demo--gallery4 .modal__demo-images figcaption {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 1;
+  padding: 6px 8px;
+  background: rgba(255,255,255,.92);
+  color: #333;
+  font-size: 11px;
+  line-height: 1.4;
+  pointer-events: none;
+}
+@media (max-width: 600px) {
+  .modal__demo--gallery4 .modal__demo-images { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .modal__demo--gallery4 .modal__demo-images figure { aspect-ratio: 1 / 1; }
+  .modal__demo--gallery4 .modal__demo-images figure:last-child { grid-column: auto; }
+  .modal__demo--gallery4 .modal__demo-images figure:last-child img { height: 100%; aspect-ratio: 1 / 1; }
+}

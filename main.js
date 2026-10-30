@@ -63,6 +63,15 @@
       </article>`;
   }
 
+  // GravityFlip の注目カードは、リンクやボタン以外の場所をクリックすると詳細を開く
+  const featuredCard = $("#featured .featured");
+  if (featuredCard && featured) {
+    featuredCard.addEventListener("click", (e) => {
+      if (e.target.closest("a, button, input, select, textarea, summary, label")) return;
+      openWork(featured.id);
+    });
+  }
+
   // ---------- 作品一覧 ----------
   const grid = $("#works-grid");
   grid.innerHTML = games
@@ -134,7 +143,7 @@
         <div><h4>技術・工夫したポイント</h4><ul>${g.points.map((p) => `<li>${esc(p)}</li>`).join("")}</ul></div>
         ${
           g.demos && g.demos.length
-            ? `<section class="modal__demos"><h4>${g.id === "rpg" ? "バトルシステムの実装例" : g.id === "momentiummaze" ? "実装の工夫" : g.id === "action2d" ? "マップ生成と敵データの管理" : g.id === "puyo" ? "消去判定とゲーム処理の実装例" : "操作感への工夫 — GIFで見る"}</h4><div class="modal__demo-grid">${g.demos.map((d) => `<article class="modal__demo${d.wide ? " modal__demo--wide" : ""}${g.id === "pentacore" ? " modal__demo--pentacore" : ""}">${d.images ? `<div class="modal__demo-images">${d.images.map((item) => `<figure><img src="${img(item.image)}" alt="${esc(item.alt || item.caption)}" loading="lazy" decoding="async" /><figcaption>${esc(item.caption || "")}</figcaption></figure>`).join("")}</div>` : `<img src="${img(d.image)}" alt="${esc(d.title)}の資料画像" loading="lazy" decoding="async" />`}<div class="modal__demo-copy"><h5>${esc(d.title)}</h5><p>${esc(d.description)}</p></div></article>`).join("")}</div></section>`
+            ? `<section class="modal__demos"><h4>${g.id === "rpg" ? "バトルシステムの実装例" : g.id === "momentiummaze" ? "実装の工夫" : g.id === "action2d" ? "マップ生成と敵データの管理" : g.id === "puyo" ? "消去判定とゲーム処理の実装例" : "操作感への工夫 — GIFで見る"}</h4><div class="modal__demo-grid">${g.demos.map((d) => `<article class="modal__demo${d.wide ? " modal__demo--wide" : ""}${d.images && d.images.length >= 4 ? " modal__demo--gallery4" : ""}${g.id === "pentacore" ? " modal__demo--pentacore" : ""}">${d.images ? `<div class="modal__demo-images">${d.images.map((item) => `<figure><img src="${img(item.image)}" alt="${esc(item.alt || item.caption)}" loading="lazy" decoding="async" /><figcaption>${esc(item.caption || "")}</figcaption></figure>`).join("")}</div>` : `<img src="${img(d.image)}" alt="${esc(d.title)}の資料画像" loading="lazy" decoding="async" />`}<div class="modal__demo-copy"><h5>${esc(d.title)}</h5><p>${esc(d.description)}</p></div></article>`).join("")}</div></section>`
             : ""
         }
         ${g.sheets && g.sheets.length ? `<section class="modal__sheets"><h4>企画・制作資料</h4>${[...new Set(g.sheets.map((x) => x.group))].map((group) => `<section class="modal__sheet-group"><h5>${esc(group)}</h5><div class="modal__sheet-grid">${g.sheets.filter((x) => x.group === group).map((sheet) => { const id = (sheet.url.match(/spreadsheets\/d\/([^/]+)/) || [])[1]; const preview = id ? `https://docs.google.com/spreadsheets/d/${id}/htmlembed?widget=true&headers=false` : sheet.url; return `<article class="modal__sheet"><div class="modal__sheet-frame"><iframe src="${esc(preview)}" title="${esc(sheet.title)}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></div><div class="modal__sheet-copy"><h6>${esc(sheet.title)}</h6><p>${esc(sheet.description)}</p><a class="btn btn--ghost btn--sm" href="${esc(sheet.url)}" target="_blank" rel="noopener">Googleスプレッドシートで開く ↗</a></div></article>`; }).join("")}</div></section>`).join("")}</section>` : ""}
@@ -155,7 +164,7 @@
   imageLightbox.addEventListener("click", (e) => { if (e.target === imageLightbox) imageLightbox.close(); });
 
   document.addEventListener("click", (e) => {
-    const demoImage = e.target.closest(".modal__demo > img");
+    const demoImage = e.target.closest(".modal__demo > img, .modal__demo--gallery4 .modal__demo-images img");
     if (demoImage) {
       lightboxImage.src = demoImage.currentSrc || demoImage.src;
       lightboxImage.alt = demoImage.alt || "拡大画像";
