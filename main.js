@@ -23,7 +23,7 @@
 
   const cover = (g, extra = "") => `
     <div class="cover${g.image ? " cover--img" : ""}" style="--h:${g.hue}">
-      <span class="cover__no">GAME_${g.no}</span>
+      <span class="cover__no">GAME_${g.no}${g.eventBadge ? ` <span class="cover__event-badge">${esc(g.eventBadge)}</span>` : ""}</span>
       ${g.award ? `<span class="badge badge--award">🏆 ${esc(g.award)}</span>` : g.badge ? `<span class="badge badge--info">${esc(g.badge)}</span>` : ""}
       ${
         g.image
@@ -44,38 +44,23 @@
       )
       .join("");
 
-  // ---------- 注目作品 ----------
+  // ---------- ゲームまとめ動画 ----------
   const featured = games.find((g) => g.featured);
-  if (featured) {
+  if (featured?.summaryVideo) {
     $("#featured").innerHTML = `
-      <article class="featured reveal" data-tags="${esc(featured.tags.join(" "))}">
-        ${cover(featured)}
-        <div class="featured__body">
-          <p class="featured__kicker">FEATURED — ${esc(featured.engine)} / ${esc(featured.period)}</p>
-          <h3>${esc(featured.title)}</h3>
-          <p>${esc(featured.summary)}</p>
-          <ul class="featured__points">${featured.points.map((p) => `<li>${esc(p)}</li>`).join("")}</ul>
-          <div class="featured__actions">
-            ${linkBtns(featured.links, "")}
-            <button class="btn btn--ghost" type="button" data-open="${featured.id}">詳細</button>
+      <article class="featured featured--video reveal">
+        <div class="featured__video">
+          <div class="featured__video-label">${esc(featured.summaryVideoLabel || "制作ゲームまとめ動画")}</div>
+          <div class="featured__video-frame">
+            <iframe src="https://www.youtube.com/embed/${encodeURIComponent(featured.summaryVideo)}" title="${esc(featured.summaryVideoLabel || "制作ゲームまとめ動画")}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
           </div>
         </div>
       </article>`;
   }
 
-  // GravityFlip の注目カードは、リンクやボタン以外の場所をクリックすると詳細を開く
-  const featuredCard = $("#featured .featured");
-  if (featuredCard && featured) {
-    featuredCard.addEventListener("click", (e) => {
-      if (e.target.closest("a, button, input, select, textarea, summary, label")) return;
-      openWork(featured.id);
-    });
-  }
-
-  // ---------- 作品一覧 ----------
+  // GravityFlip はまとめ動画の下で、他のゲームと同じサイズのカードとして表示
   const grid = $("#works-grid");
   grid.innerHTML = games
-    .filter((g) => !g.featured)
     .map(
       (g) => `
       <li class="work" data-tags="${esc(g.tags.join(" "))}">
@@ -111,9 +96,7 @@
           w.style.animation = "";
         }
       });
-      const feat = $(".featured");
-      if (feat) feat.hidden = !(f === "all" || feat.dataset.tags.split(" ").includes(f));
-      $(".empty").hidden = shown > 0 || (feat && !feat.hidden);
+      $(".empty").hidden = shown > 0;
     }),
   );
 
@@ -143,11 +126,11 @@
         <div><h4>技術・工夫したポイント</h4><ul>${g.points.map((p) => `<li>${esc(p)}</li>`).join("")}</ul></div>
         ${
           g.demos && g.demos.length
-            ? `<section class="modal__demos"><h4>${g.id === "rpg" ? "バトルシステムの実装例" : g.id === "momentiummaze" ? "実装の工夫" : g.id === "action2d" ? "マップ生成と敵データの管理" : g.id === "puyo" ? "消去判定とゲーム処理の実装例" : "操作感への工夫 — GIFで見る"}</h4><div class="modal__demo-grid">${g.demos.map((d) => `<article class="modal__demo${d.wide ? " modal__demo--wide" : ""}${d.images && d.images.length >= 4 ? " modal__demo--gallery4" : ""}${g.id === "pentacore" ? " modal__demo--pentacore" : ""}">${d.images ? `<div class="modal__demo-images">${d.images.map((item) => `<figure><img src="${img(item.image)}" alt="${esc(item.alt || item.caption)}" loading="lazy" decoding="async" /><figcaption>${esc(item.caption || "")}</figcaption></figure>`).join("")}</div>` : `<img src="${img(d.image)}" alt="${esc(d.title)}の資料画像" loading="lazy" decoding="async" />`}<div class="modal__demo-copy"><h5>${esc(d.title)}</h5><p>${esc(d.description)}</p></div></article>`).join("")}</div></section>`
+            ? `<section class="modal__demos"><h4>${g.id === "rpg" ? "バトルシステムの実装例" : g.id === "momentiummaze" ? "実装の工夫" : g.id === "action2d" ? "マップ生成と敵データの管理" : g.id === "puyo" ? "消去判定とゲーム処理の実装例" : g.id === "hyperrunx" ? "実装の工夫" : "操作感への工夫 — GIFで見る"}</h4><div class="modal__demo-grid">${g.demos.map((d) => `<article class="modal__demo${d.wide ? " modal__demo--wide" : ""}${d.images && d.images.length >= 4 ? " modal__demo--gallery4" : ""}${g.id === "pentacore" ? " modal__demo--pentacore" : ""}">${d.images ? `<div class="modal__demo-images">${d.images.map((item) => `<figure><img src="${img(item.image)}" alt="${esc(item.alt || item.caption)}" loading="lazy" decoding="async" /><figcaption>${esc(item.caption || "")}</figcaption></figure>`).join("")}</div>` : `<img src="${img(d.image)}" alt="${esc(d.title)}の資料画像" loading="lazy" decoding="async" />`}<div class="modal__demo-copy"><h5>${esc(d.title)}</h5><p>${esc(d.description)}</p></div></article>`).join("")}</div></section>`
             : ""
         }
         ${g.sheets && g.sheets.length ? `<section class="modal__sheets"><h4>企画・制作資料</h4>${[...new Set(g.sheets.map((x) => x.group))].map((group) => `<section class="modal__sheet-group"><h5>${esc(group)}</h5><div class="modal__sheet-grid">${g.sheets.filter((x) => x.group === group).map((sheet) => { const id = (sheet.url.match(/spreadsheets\/d\/([^/]+)/) || [])[1]; const preview = id ? `https://docs.google.com/spreadsheets/d/${id}/htmlembed?widget=true&headers=false` : sheet.url; return `<article class="modal__sheet"><div class="modal__sheet-frame"><iframe src="${esc(preview)}" title="${esc(sheet.title)}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></div><div class="modal__sheet-copy"><h6>${esc(sheet.title)}</h6><p>${esc(sheet.description)}</p><a class="btn btn--ghost btn--sm" href="${esc(sheet.url)}" target="_blank" rel="noopener">Googleスプレッドシートで開く ↗</a></div></article>`; }).join("")}</div></section>`).join("")}</section>` : ""}
-        ${g.links.length ? `<div class="modal__links">${linkBtns(g.links, "")}</div>` : ""}
+        ${g.designDocPages ? `<div class="modal__links">${g.designDocPages.map((page) => `<button class="btn btn--primary" type="button" data-design-page='${esc(JSON.stringify(page))}' data-title="${esc(g.title)}">📄 ${esc(page.label || "設計書")}</button>`).join("")}${g.video ? `<button class="btn btn--ghost" type="button" data-video="${esc(g.video)}" data-title="${esc(g.videoLabel || g.title)}">▶ ${esc(g.videoLabel || "出展映像")}</button>` : ""}${g.links.length ? linkBtns(g.links, "") : ""}</div>` : (g.links.length ? `<div class="modal__links">${linkBtns(g.links, "")}</div>` : "")}
       </div>`;
     modal.showModal();
     history.replaceState(null, "", `#work-${id}`);
@@ -228,6 +211,22 @@
     if (e.target.closest("[data-close-video]") || e.target === videoModal) videoModal.close();
   });
   videoModal.addEventListener("close", () => ($("#video-frame").innerHTML = ""));
+
+  // 設計書はJOYコンの発表動画と同じように、サイト内モーダルで表示
+  const docModal = $("#doc-modal");
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-design-page]");
+    if (b) {
+      const page = JSON.parse(b.dataset.designPage || "{}");
+      const image = page.image;
+      const label = page.label || "設計書";
+      $("#doc-title").textContent = `${b.dataset.title} — ${label}`;
+      $("#doc-frame").innerHTML = `<div class="modal__doc-pages"><figure class="modal__doc-page"><img src="${esc(`img/${image}`)}" alt="${esc(b.dataset.title)} ${esc(label)}" loading="lazy" decoding="async"><figcaption>${esc(label)}</figcaption></figure></div>`;
+      docModal.showModal();
+    }
+    if (e.target.closest("[data-close-doc]") || e.target === docModal) docModal.close();
+  });
+  docModal.addEventListener("close", () => ($("#doc-frame").innerHTML = ""));
 
   // ---------- スクロールで表示 ----------
   document.querySelectorAll(".section .h2, .section__head, .profile__card, .skills, .events").forEach((el) => el.classList.add("reveal"));

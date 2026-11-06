@@ -152,6 +152,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
   background-size: 22px 22px;
 }
 .cover__no { position: absolute; top: 14px; left: 16px; font-family: var(--mono); font-size: 12px; color: hsl(var(--h) 80% 80%); letter-spacing: .1em; }
+.cover__event-badge { margin-left: 8px; padding: 3px 8px; border: 1px solid currentColor; border-radius: 999px; font-family: var(--sans); font-size: 11px; letter-spacing: .02em; white-space: nowrap; }
 .cover__title {
   position: absolute; left: 16px; right: 16px; bottom: 12px;
   font-family: var(--pixel); font-size: clamp(22px, 2.6vw, 30px); line-height: 1.2;
@@ -177,12 +178,18 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
 /* ---------- FEATURED ---------- */
 .featured {
-  display: grid; grid-template-columns: 1.25fr 1fr; gap: 0;
+  display: block;
   background: var(--panel); border: 1px solid var(--line); border-radius: calc(var(--radius) + 4px);
   overflow: hidden; margin-bottom: 28px; cursor: pointer;
 }
 .featured .cover { aspect-ratio: auto; min-height: 340px; }
 .featured .cover__title { font-size: clamp(34px, 5vw, 60px); left: 28px; bottom: 24px; }
+.featured__video { width: 100%; max-width: 1080px; margin: 0 auto; background: #000; display: flex; flex-direction: column; }
+.featured__video-label { padding: 14px 20px; font-family: var(--mono); font-size: 12px; color: var(--lime); letter-spacing: .08em; background: #111318; border-bottom: 1px solid var(--line); }
+.featured__video-frame { width: 100%; aspect-ratio: 16 / 9; min-height: 0; }
+.featured__video-frame iframe { width: 100%; height: 100%; display: block; border: 0; }
+.featured--video { cursor: default; }
+
 .featured .cover__no { left: 28px; top: 24px; }
 .featured__body { padding: clamp(24px, 4vw, 44px); display: flex; flex-direction: column; gap: 14px; }
 .featured__kicker { font-family: var(--mono); font-size: 12px; color: var(--lime); letter-spacing: .12em; margin: 0; }
@@ -192,7 +199,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .featured__points li { padding-left: 22px; position: relative; color: #d6dae3; }
 .featured__points li::before { content: "▸"; position: absolute; left: 0; color: var(--lime); }
 .featured__actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: auto; padding-top: 8px; }
-@media (max-width: 860px) { .featured { grid-template-columns: 1fr; } .featured .cover { min-height: 240px; } }
+@media (max-width: 860px) { .featured .cover { min-height: 240px; } .featured__video-label { padding: 12px 16px; } }
 
 /* ---------- WORK GRID ---------- */
 .works { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
@@ -409,4 +416,44 @@ button { font: inherit; color: inherit; cursor: pointer; }
   .modal__demo--gallery4 .modal__demo-images figure { aspect-ratio: 1 / 1; }
   .modal__demo--gallery4 .modal__demo-images figure:last-child { grid-column: auto; }
   .modal__demo--gallery4 .modal__demo-images figure:last-child img { height: 100%; aspect-ratio: 1 / 1; }
+}
+
+/* 設計書モーダル：JOYコンの動画視聴と同じサイト内表示 */
+.modal--doc {
+  width: min(1100px, 100% - 24px);
+  max-width: 1100px;
+  height: min(92svh, 900px);
+}
+.modal__doc {
+  height: calc(100% - 54px);
+  background: #222;
+  overflow: auto;
+  padding: 18px;
+}
+.modal__doc-pages {
+  display: grid;
+  gap: 18px;
+  justify-items: center;
+}
+.modal__doc-page {
+  width: min(100%, 900px);
+  margin: 0;
+  background: #fff;
+  box-shadow: 0 8px 28px rgba(0,0,0,.35);
+}
+.modal__doc-page img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.modal__doc-page figcaption {
+  padding: 7px 10px;
+  background: #fff;
+  color: #555;
+  font: 600 10px/1.2 var(--mono);
+  letter-spacing: .08em;
+  text-align: center;
+}
+@media (max-width: 620px) {
+  .modal--doc { width: calc(100% - 16px); height: 94svh; }
 }
