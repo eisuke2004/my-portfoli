@@ -113,7 +113,7 @@
         <p>${esc(g.summary)}</p>
         ${
           g.video
-            ? `<div><h4>プレイ動画</h4><div class="modal__video"><iframe src="https://www.youtube-nocookie.com/embed/${esc(g.video)}?rel=0" title="${esc(g.title)} プレイ動画" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div></div>`
+            ? `<div><h4>プレイ動画</h4><div class="modal__video"><iframe src="https://www.youtube.com/embed/${esc(g.video)}?rel=0" title="${esc(g.title)} プレイ動画" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div></div>`
             : ""
         }
         <dl class="modal__facts">
